@@ -11,3 +11,7 @@ router = APIRouter()
 def create_new_subscriber(subscriber: schemas.SubscriberCreate, db: Session=Depends(get_db)) -> schemas.SubscriberOut:
     return crud.create_new_subscriber(subscriber, db)
     
+    
+@router.get("/emails", response_model = list[schemas.SubscriberOut])
+def get_all_email(db: Session=Depends(get_db)):
+    return crud.get_all_emails(db)
