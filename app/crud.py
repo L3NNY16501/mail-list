@@ -1,5 +1,5 @@
 from app.models import Subscriber
-from app.schemas import SubscriberCreate
+from app.schemas import SubscriberCreate, SubscriberOut
 from sqlalchemy.orm import Session
 
 
@@ -18,6 +18,11 @@ def get_subscriber_by_email(email: str, db: Session) -> Subscriber:
     if not subscriber:
         return None
     return subscriber
+
+
+# Get all emails in database - Returns a list of Subscriber objects (records in table)
+def get_all_emails(db: Session) -> list[SubscriberOut]:
+    return db.query(Subscriber).all()
 
 
 # Delete By Email
