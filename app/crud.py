@@ -26,11 +26,7 @@ def get_all_emails(db: Session) -> list[SubscriberOut]:
 
 
 # Delete By Email
-def delete_subscriber(email: str, db: Session) -> Subscriber:
-    subscriber = get_subscriber_by_email(email, db)
-    if not subscriber:
-        return None
-
+def delete_subscriber(subscriber: Subscriber, db: Session) -> Subscriber:
     db.delete(subscriber)
     db.commit()
     return subscriber

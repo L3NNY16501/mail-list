@@ -6,7 +6,6 @@ from datetime import datetime
 class SubscriberCreate(BaseModel):
     email: EmailStr
     
-
 # Create Schema for returning subscriber information
 class SubscriberOut(BaseModel):
     id: int
