@@ -5,6 +5,17 @@ from datetime import datetime
 # Create Schema for subscriber creation
 class SubscriberCreate(BaseModel):
     email: EmailStr
+    password: str
+    
+# User Login Schema
+class SubscriberLogin(BaseModel):
+    email: str
+    password: str
+    
+# Token response
+class Token(BaseModel):
+    access_token: str
+    token_type: str
     
 # Create Schema for returning subscriber information
 class SubscriberOut(BaseModel):
