@@ -15,10 +15,6 @@ def register(subscriber: schemas.SubscriberCreate, db: Session = Depends(get_db)
     if existing_user:
         raise HTTPException(status_code=404, detail="User already exists")
     
-    # Hash Password
-    hashed_password = security.hash_password(subscriber.password)
-    subscriber.password = hashed_password
-    
     # Create user in DB
     new_user = crud.create_new_subscriber(subscriber, db)
     

@@ -1,11 +1,16 @@
 from app.models import Subscriber
 from app.schemas import SubscriberCreate, SubscriberOut
 from sqlalchemy.orm import Session
+from app import security
 
 
 # Add new Subscriber to database
 def create_new_subscriber(subscriber: SubscriberCreate, db: Session) -> Subscriber:
-    new_subscriber = Subscriber(**subscriber.dict())
+    hashed = security.hash_password(subscriber.password)
+    new_subscriber = Subscriber(
+        email=subscriber.email,
+        password=hashed
+    )
     db.add(new_subscriber)
     db.commit()
     db.refresh(new_subscriber)
