@@ -14,12 +14,10 @@ def register(subscriber: schemas.SubscriberCreate, db: Session = Depends(get_db)
     # Check if user exists
     existing_user = crud.get_subscriber_by_email(subscriber.email, db)
     if existing_user:
-        raise HTTPException(status_code=404, detail="User already exists")
+        raise HTTPException(status_code=409, detail="User already exists")
     
     # Create user in DB
     new_user = crud.create_new_subscriber(subscriber, db)
-    
-    # Return Token
     return new_user
 
 
