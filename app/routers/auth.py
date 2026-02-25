@@ -8,7 +8,7 @@ router = APIRouter(
     tags=["Authentication"]
 )
 
-@router.post("/register", response_model=schemas.Token)
+@router.post("/register", response_model=schemas.SubscriberOut)
 def register(subscriber: schemas.SubscriberCreate, db: Session = Depends(get_db)):
     # Check if user exists
     existing_user = crud.get_subscriber_by_email(subscriber.email, db)
@@ -19,8 +19,7 @@ def register(subscriber: schemas.SubscriberCreate, db: Session = Depends(get_db)
     new_user = crud.create_new_subscriber(subscriber, db)
     
     # Return Token
-    token = security.create_access_token({"sub": new_user.email})
-    return {"access_token": token, "token_type": "bearer"}
+    return new_user
 
 
 @router.post("/login", response_model=schemas.Token)
@@ -32,5 +31,6 @@ def login(subscriber: schemas.SubscriberLogin, db: Session = Depends(get_db)):
     if crud.verify_subscriber_password(db_subscriber, subscriber) == False:
         raise HTTPException(status_code=404, detail="Incorrect Password")
     
+    # Return Token
     token = security.create_access_token({"sub": db_subscriber.email})
     return {"access_token": token, "token_type": "Bearer"}
