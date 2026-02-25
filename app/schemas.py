@@ -9,7 +9,7 @@ class SubscriberCreate(BaseModel):
     
 # User Login Schema
 class SubscriberLogin(BaseModel):
-    email: str
+    email: EmailStr
     password: str
     
 # Token response

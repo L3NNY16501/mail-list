@@ -9,7 +9,6 @@ router = APIRouter(
     tags=["Subscribers"]
 )
 
-
 # Endpoint for Returning all emails in database
 @router.get("/emails", response_model = list[schemas.SubscriberOut])
 def get_all_email(db: Session=Depends(get_db)):
