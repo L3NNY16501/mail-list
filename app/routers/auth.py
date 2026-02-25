@@ -20,7 +20,6 @@ def register(subscriber: schemas.SubscriberCreate, db: Session = Depends(get_db)
     new_user = crud.create_new_subscriber(subscriber, db)
     return new_user
 
-
 @router.post("/login", response_model=schemas.Token)
 def login(
     form_data: OAuth2PasswordRequestForm = Depends(),

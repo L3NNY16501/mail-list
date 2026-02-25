@@ -45,5 +45,5 @@ def verify_token(token: str) -> str:
     return email
 
 def get_current_user(token: str = Depends(oauth2_scheme)) -> str:
-    """Dependency to get current authenticated user"""
+    """Dependency to get current authenticated user. Returns email as a string"""
     return verify_token(token)
