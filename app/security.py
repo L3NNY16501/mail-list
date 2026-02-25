@@ -25,9 +25,9 @@ def create_access_token(data: dict):
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 # ----- Token Verification -----
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
-def verify_token(token: str):
+def verify_token(token: str) -> str:
     """Decode JWT and return email"""
     credentials_exception = HTTPException(
         status_code = status.HTTP_401_UNAUTHORIZED,
@@ -44,6 +44,6 @@ def verify_token(token: str):
         raise credentials_exception
     return email
 
-def get_current_user(token: str = Depends):
+def get_current_user(token: str = Depends(oauth2_scheme)) -> str:
     """Dependency to get current authenticated user"""
     return verify_token(token)

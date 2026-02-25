@@ -25,8 +25,8 @@ def get_subscriber_by_email(email: str, db: Session) -> Subscriber:
     return subscriber
 
 # Verifies Hashed password
-def verify_subscriber_password(db_subscriber: Subscriber, login_inputs: SubscriberLogin) -> bool:
-    return security.verify_password(login_inputs.password, db_subscriber.hashed_password)
+def verify_subscriber_password(password_input: str , db_subscriber: Subscriber) -> bool:
+    return security.verify_password(password_input, db_subscriber.hashed_password)
         
     
   

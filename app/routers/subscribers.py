@@ -2,12 +2,18 @@ from fastapi import APIRouter, Depends, HTTPException
 from app.database import get_db
 from sqlalchemy.orm import Session
 import app.crud as crud, app.schemas as schemas
+from app.security import get_current_user, verify_token
 
 
 router = APIRouter(
     prefix=("/subscribers"),
     tags=["Subscribers"]
 )
+
+# Create a protected endpoint for logged in and authenticated Users
+@router.get("/user-info", response_model=schemas.SubscriberOut)
+def get_user_information(current_user_email = Depends(get_current_user), db: Session = Depends(get_db)):
+    return crud.get_subscriber_by_email(current_user_email, db)
 
 # Endpoint for Returning all emails in database
 @router.get("/emails", response_model = list[schemas.SubscriberOut])
