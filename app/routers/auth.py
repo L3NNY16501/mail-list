@@ -20,7 +20,7 @@ def register(subscriber: schemas.SubscriberCreate, db: Session = Depends(get_db)
     
     # Return Token
     token = security.create_access_token({"sub": new_user.email})
-    return {"access token": token, "token_type": "bearer"}
+    return {"access_token": token, "token_type": "bearer"}
 
 
 @router.post("/login", response_model=schemas.Token)
@@ -29,5 +29,8 @@ def login(subscriber: schemas.SubscriberLogin, db: Session = Depends(get_db)):
     if not db_subscriber:
         raise HTTPException(status_code=404, detail="Invalid Credentials")
     
+    if crud.verify_subscriber_password(db_subscriber, subscriber) == False:
+        raise HTTPException(status_code=404, detail="Incorrect Password")
+    
     token = security.create_access_token({"sub": db_subscriber.email})
-    return {"Access Token": token, "Token Type": "Bearer"}
+    return {"access_token": token, "token_type": "Bearer"}

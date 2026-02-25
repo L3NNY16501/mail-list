@@ -1,5 +1,5 @@
 from app.models import Subscriber
-from app.schemas import SubscriberCreate, SubscriberOut
+from app.schemas import SubscriberCreate, SubscriberOut, SubscriberLogin
 from sqlalchemy.orm import Session
 from app import security
 
@@ -9,7 +9,7 @@ def create_new_subscriber(subscriber: SubscriberCreate, db: Session) -> Subscrib
     hashed = security.hash_password(subscriber.password)
     new_subscriber = Subscriber(
         email=subscriber.email,
-        password=hashed
+        hashed_password=hashed
     )
     db.add(new_subscriber)
     db.commit()
@@ -24,7 +24,12 @@ def get_subscriber_by_email(email: str, db: Session) -> Subscriber:
         return None
     return subscriber
 
-
+# Verifies Hashed password
+def verify_subscriber_password(db_subscriber: Subscriber, login_inputs: SubscriberLogin) -> bool:
+    return security.verify_password(login_inputs.password, db_subscriber.hashed_password)
+        
+    
+  
 # Get all emails in database - Returns a list of Subscriber objects (records in table)
 def get_all_emails(db: Session) -> list[SubscriberOut]:
     return db.query(Subscriber).all()
