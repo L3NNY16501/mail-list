@@ -27,7 +27,7 @@ def register(subscriber: schemas.SubscriberCreate, db: Session = Depends(get_db)
     return {"access token": token, "token_type": "bearer"}
 
 
-@router.post("/login", reponse_model=schemas.Token)
+@router.post("/login", response_model=schemas.Token)
 def login(subscriber: schemas.SubscriberLogin, db: Session = Depends(get_db)):
     db_subscriber = crud.get_subscriber_by_email(subscriber.email, db)
     if not db_subscriber:
